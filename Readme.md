@@ -1,15 +1,14 @@
 ---
 
-# **PiStream-Lite**
-
-A One-Command RTSP Streaming Stack for Raspberry Pi 3B+, Pi 4, and Pi 5
-USB Webcam → H.264 RTSP Stream with Auto-Recovery and Rollback Support
+<img width="1510" height="656" alt="Banner" src="https://github.com/user-attachments/assets/bc25f7ee-70f4-4247-a6f1-068effbd2adf" />
 
 ---
 
 ## Overview
 
 PiStream-Lite is a minimal, reliable, and hardware-validated RTSP streaming setup for Raspberry Pi devices. It is specifically engineered for USB webcams and provides automatic recovery when the webcam is unplugged, reconnected, or when FFmpeg crashes. The setup also includes a complete rollback script to fully uninstall all components.
+
+A One-Command RTSP Streaming Stack for Raspberry Pi 3B+, Pi 4, and Pi 5, USB Webcam → H.264 RTSP Stream with Auto-Recovery and Rollback Support
 
 This project exists to solve a frustrating problem shared by many Raspberry Pi users:
 getting a stable, low-latency H.264 RTSP stream from a USB webcam on Raspberry Pi boards without MotionEye, without MJPEG, and without unreliable community scripts.
@@ -274,5 +273,6 @@ The result is PiStream-Lite: a single-command setup that avoids the entire rabbi
 
 MIT License
 You may use, modify, and distribute freely.
+
 
 ---
