@@ -275,7 +275,7 @@ PiStream-Lite is currently one of the only fully-automated, Pi-wide compatible, 
 
 ---
 
-# Project Journey (Condensed and Polished Technical Narrative)
+# Project Journey 
 
 This project started from a personal need: to deploy a reliable RTSP stream for embedded systems testing, telemetry dashboards, and AI pipelines without turning to MJPEG or incomplete scripts.
 
@@ -316,4 +316,5 @@ You may use, modify, and distribute freely.
 
 
 ---
+
 
