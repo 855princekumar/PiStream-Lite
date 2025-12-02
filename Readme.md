@@ -33,6 +33,46 @@ cold plug, hot plug, delayed connection, boot with no camera, reconnect after mi
 
 ---
 
+##  Debian Package Installer!
+
+PiStream-Lite is packaged as a `.deb` for plug‑and‑play installation.
+
+### Install like a real Pi package:
+
+```bash
+wget https://github.com/855princekumar/PiStream-Lite/releases/download/v0.1.0/pistreamlite_0.1.0_arm64.deb
+sudo dpkg -i pistreamlite_0.1.0_arm64.deb
+```
+
+### You get a CLI:
+
+```
+pistreamlite install
+pistreamlite rollback
+pistreamlite status
+pistreamlite logs
+pistreamlite doctor
+pistreamlite version
+```
+
+### Why the `.deb` matters
+
+- One line install  
+- Auto‑root handling  
+- Clean uninstall via `sudo apt remove pistreamlite`  
+- No copying scripts manually  
+- Versioned deployments  
+- Future apt repository support
+
+>  An apt repo will be released soon so you can simply run:
+>
+> ```
+> sudo apt install pistreamlite
+> ```
+>
+> It will include credential‑secured RTSP streaming support (username/password).
+---
+
 # Why This Project Exists
 
 Over several days, I encountered nearly every failure scenario that Raspberry Pi users face when trying to stream a webcam over RTSP:
@@ -276,3 +316,4 @@ You may use, modify, and distribute freely.
 
 
 ---
+
