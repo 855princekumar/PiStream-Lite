@@ -10,7 +10,7 @@ A One-Command RTSP Streaming Stack for Raspberry Pi 3B+, Pi 4, and Pi 5:
 USB Webcam → H.264 RTSP Stream with Auto-Recovery and Rollback Support
 
 This project exists to solve a frustrating problem shared by many Raspberry Pi users:
-getting a stable, low-latency H.264 RTSP stream from a USB webcam on Raspberry Pi boards without MotionEye, without MJPEG, and without unreliable community scripts.
+Getting a stable, low-latency H.264 RTSP stream from a USB webcam on Raspberry Pi boards without MotionEye, without MJPEG, and without unreliable community scripts.
 
 ---
 
@@ -62,7 +62,7 @@ pistreamlite version
 
 * One-line install
 * Auto-root handling
-* Clean uninstall via `sudo apt remove pistreamlite`
+* Clean uninstall via `sudo apt remove pistreamlite.`
 * No copying scripts manually
 * Versioned deployments
 * Future apt repository support
@@ -136,30 +136,57 @@ No existing functionality is removed.
 
 ---
 
-## GUI Evolution (v2.x → v3.x)
+# GUI Evolution and Architecture (v2.x → v3.x)
 
-PiStream-Lite evolved into a **GUI-first workflow** for ease of use, monitoring, and debugging.
+PiStream-Lite’s GUI evolved along **two parallel but complementary tracks**:
 
-### Implemented GUI variants
+* **v2.x series:** single-stream stability and security validation
+* **v3.x series:** multi-stream orchestration and scaling
 
-* Basic GUI (single stream control and health)
-* GUI with login authentication
-* Single-camera GUI with resolution switching
-* Dual-camera GUI (stable)
-* Multi-camera GUI (experimental)
+These tracks intentionally coexist.
+Security and stability improvements are validated on **single-stream pipelines first**, then propagated to **multi-stream deployments**.
 
-All GUIs are built with:
+---
 
-* Flask backend
-* Tailwind CSS frontend
-* MediaMTX API-based stream health checks
+## v2.x GUI Evolution — Single-Stream Series
 
-Each version folder includes:
+**Purpose:**
+Establish a stable GUI control plane and validate authentication, monitoring, and recovery logic on a single RTSP stream.
 
-* `install.sh`
-* `rollback.sh`
-* GUI screenshots/snippets for preview
-* Verified VLC/LAN streaming tests
+**Key characteristics:**
+
+* One RTSP stream per Pi
+* GUI-first control and health monitoring
+* Session-based authentication at GUI level
+* Resource-aware operation on Pi 3B+
+* Serves as the security and correctness baseline
+
+<img width="2152" height="856" alt="v2 x-growth" src="https://github.com/user-attachments/assets/9f80d1ea-4e8d-475a-9c6d-bbac9d3d8eaf" />
+
+v2.x series GUI evolution – System Architecture & Flow
+
+This image represents the architectural flow of the v2.x series, showing the relationship between the PiStream core, encoding pipeline, dashboard, monitoring, and secure access boundary.
+
+---
+
+## v3.x GUI Evolution — Multi-Stream Series
+
+**Purpose:**
+Scale the proven single-stream pipeline into a controlled multi-stream architecture while preserving isolation and stability.
+
+**Key characteristics:**
+
+* Multiple independent RTSP streams (usb1, usb2, usb3, usb4)
+* Per-stream control and health isolation
+* System-wide health visibility
+* Designed for Pi 4 / Pi 5 with external power isolation
+* Builds directly on lessons validated in v2.x
+
+<img width="1615" height="785" alt="v3 x-growth" src="https://github.com/user-attachments/assets/cba32f0c-788b-4d1e-a643-9e8d373e8e08" />
+
+v3.x series GUI evolution – System Architecture & Flow
+
+This image illustrates the multi-stream control plane, showing parallel stream supervision, consolidated health metrics, and scalable GUI orchestration.
 
 ---
 
@@ -181,7 +208,8 @@ This is intentionally **not high-complexity authentication**, to remain suitable
 * GUI authentication: stable
 * RTSP-level authentication: under active testing
 
-RTSP authentication currently causes instability on low-end hardware due to handshake overhead interacting with FFmpeg and MediaMTX pipelines. This is being addressed and will be released once fully validated.
+RTSP authentication currently introduces instability on low-end hardware due to handshake overhead interacting with FFmpeg and MediaMTX pipelines.
+Once validated on single-stream setups, the same mechanism will be extended to multi-stream deployments.
 
 ---
 
@@ -215,14 +243,7 @@ Dynamic resolution fallback is implemented to prevent pipeline crashes.
 
 ## Pi 4 / Pi 5: 3–4 Camera Support (v3 Test Scripts)
 
-On Raspberry Pi 4 and Raspberry Pi 5, PiStream-Lite can scale further **when power is isolated correctly**.
-
-### Why Pi 4 / Pi 5 scale better
-
-* Dedicated USB 3.0 controller
-* Higher CPU throughput
-* Improved memory bandwidth
-* Better I/O scheduling
+On Raspberry Pi 4 and Raspberry Pi 5, PiStream-Lite scales further **when power is isolated correctly**.
 
 ### Tested capability
 
@@ -238,63 +259,20 @@ This does not apply to Pi 3B+.
 
 ## Power Isolation and USB Power HAT
 
-### Problem
+A dedicated USB power-isolation HAT was designed to:
 
-Even on Pi 4 and Pi 5, powering 3–4 USB webcams directly from the board leads to:
+* Separate USB power and data lines
+* Power peripherals externally
+* Eliminate voltage drops and brownouts
+* Allow the Pi to focus purely on processing and I/O
 
-* Voltage drops
-* USB resets
-* Random disconnects
-* Throttling unrelated to compute load
-
-### Implemented solution
-
-A **dedicated USB power-isolation HAT module** was designed to:
-
-* Physically separate USB power and data lines
-* Power all USB peripherals externally
-* Allow the Pi to focus only on processing and I/O
-* Eliminate undervoltage and brownout issues
-
-Power can be supplied:
-
-* Separately to peripherals
-* Separately or in parallel to the Pi
-
-This enables stable multi-camera scaling.
-
-### Hardware repository
-
-To avoid bloating this repository:
-
-* PCB design
-* Schematics
-* BOM
-* Power validation notes
-
-will be published in a **separate dedicated hardware repository**.
-This README will link to it once published.
-
-Status:
-
-* Design completed
-* Bench-tested
-* Documentation and repo publishing in progress
+PCB design, schematics, BOM, and validation notes will be published in a **separate dedicated hardware repository** to avoid bloating this repo.
 
 ---
 
 ## CSI Camera Support (In Progress)
 
-CSI camera streaming using the **same FFmpeg → MediaMTX pipeline** is under active testing.
-
-Planned support:
-
-* CSI-only streaming
-* USB + CSI mixed pipelines
-* Unified GUI control
-* Same auto-heal and recovery logic
-
-This will be pushed once testing is finalized.
+CSI camera streaming using the same FFmpeg → MediaMTX pipeline is under active testing and will be released once validated.
 
 ---
 
@@ -318,99 +296,17 @@ flowchart TD
 
 ---
 
-## Supervised Runtime Architecture
-
-```mermaid
-flowchart LR
-    systemd[systemd]
-    Wrapper[Auto-Heal Wrapper]
-    FFmpeg
-    MediaMTX
-    GUI[Flask GUI]
-
-    systemd --> Wrapper
-    Wrapper --> MediaMTX
-    Wrapper --> FFmpeg
-    GUI --> MediaMTX
-    GUI --> systemd
-```
-
----
-
-## Hardware Perspective (USB Power Isolation)
-
-```mermaid
-flowchart TB
-    USBHub[USB Hub]
-    PowerHAT[External Power HAT]
-    Pi[Raspberry Pi]
-    Cameras[USB Cameras]
-
-    Cameras --> USBHub
-    USBHub -->|Data| Pi
-    PowerHAT -->|Power| Cameras
-    PowerHAT -->|Optional| Pi
-```
-
----
-
 # Folder Structure (Updated)
 
 ```
 PiStream-lite/
 ├── v1.0/
-│   ├── rtsp_setup.sh
-│   └── rollback_rtsp.sh
-│
 ├── v2.x/
-│   ├── v2.0/
-│   │   ├── setup-1/(Less-GUI-Features)
-│   │   └── setup-2/(Add-GUI-Featrues)
-│   ├── v2.1/
-│   └── v2.2/
-│
 ├── v3.x/
-│   ├── v3.0-(Stable-2-webcam)/
-│   ├── v3.0-(4-cam-test-setup)/
-│   └── v3.1/
-│
 └── README.md
 ```
 
 Each folder includes install and rollback scripts, along with GUI preview assets where applicable.
-
----
-
-## RTSP URLs
-
-Examples:
-
-```
-rtsp://<PI-IP>:8554/usb
-rtsp://<PI-IP>:8554/usb1
-rtsp://<PI-IP>:8554/usb2
-```
-
----
-
-## Networking and Remote Access
-
-* Tested over LAN using VLC and FFplay
-* Tested through reverse proxy setups
-* Internet-accessible RTSP in controlled environments
-* Minimal latency increase
-* No significant quality degradation
-
----
-
-# Performance Notes
-
-* V4L2 capture
-* YUYV422 to YUV420P conversion
-* libx264 ultrafast preset
-* RTSP push to localhost MediaMTX
-
-Hardware H.264 encoding is intentionally avoided due to inconsistent behavior across USB webcams.
 
 ---
 
@@ -419,10 +315,8 @@ Hardware H.264 encoding is intentionally avoided due to inconsistent behavior ac
 * Stable RTSP authentication
 * CSI camera integration
 * Publish power HAT hardware repository
-* Pi 4 vs Pi 5 performance benchmarks
+* Pi 4 vs Pi 5 benchmarks
 * Multi-camera GUI refinements
-* Web-based monitoring dashboard
-* AI pipeline integration examples
 
 ---
 
@@ -432,4 +326,3 @@ MIT License
 You may use, modify, and distribute freely.
 
 ---
-
