@@ -12,6 +12,16 @@ USB Webcam → H.264 RTSP Stream with Auto-Recovery and Rollback Support
 This project exists to solve a frustrating problem shared by many Raspberry Pi users:
 Getting a stable, low-latency H.264 RTSP stream from a USB webcam on Raspberry Pi boards without MotionEye, without MJPEG, and without unreliable community scripts.
 
+## Start History 
+
+<a href="https://www.star-history.com/?repos=855princekumar/PiStream-Lite&type=date&legend=top-left">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=855princekumar/PiStream-Lite&type=date&theme=dark&legend=top-left" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=855princekumar/PiStream-Lite&type=date&legend=top-left" />
+    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=855princekumar/PiStream-Lite&type=date&legend=top-left" />
+  </picture>
+</a>
+
 ---
 
 ### PiStream-Lite has been validated on
